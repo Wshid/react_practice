@@ -1,0 +1,386 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://fb.me/react-0.13.3.js"></script>
+    <script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/jsx">
+    
+        var Avatar = React.createClass({
+            propTypes:{
+              name : React.PropTypes.string.isRequired,
+              id : React.PropTypes.number.isRequired,
+              width : React.PropTypes.number.isRequired,
+              height : React.PropTypes.number.isRequired,
+              alt : React.PropTypes.string
+            },
+            render(){
+                var avatarImg = '/img/avatar_${this.props.user.id}.png';
+                
+                return(
+                    <div>
+                        <span>{this.props.user.name}</span>
+                        <img src={avatarImg} />
+                    </div>
+                );
+            }
+        });
+        
+        var user={
+            id : 10,
+            name : 'Hoge'
+        };
+        
+    <Avatar user={user} />
+    
+    
+    var Avatar = React.createClass({
+       propTypes:{
+           user : React.PropTypes.shape({ // 지정된 형식 충족 여부
+               id : React.PropTypes.number.isRequired,
+               name : React.PropTypes.string.isRequired
+           })
+       },
+       render(){
+           var avatarImg='/img/avatar_${this.props.user.id}.png';
+           return(
+            
+            <div>
+                <span>{this.props.user.name}</span>
+                <img src={avatarImg} />
+            </div>
+            );
+        }
+    });
+    
+    // ES6
+    class Avatar extends React.Component{
+        render(){
+            var avatarImg='/img/avatar_${this.props.user.id}.png';
+            
+            return(
+                <div>
+                    <span>{this.props.user.name}</span>
+                    <img src={avatarImg} />
+                </div>
+            );
+        }
+    }
+    
+    Avatar.propTypes={
+        user: React.PropTypes.shape({
+            id: React.PropTypes.number.isRequired,
+            name : React.PropTypes.string.isRequired
+        })
+    };
+    
+    export default Avatar;
+    
+    
+    var Hello=React.createClas({
+        getDefaultProps(){
+            return(
+                name : 'React'
+            );
+        },
+        render(){
+            return <div>Hello {this.props.name} </div>
+        }
+    });
+    
+    class Hello extends React.Component{
+        render(){
+            <div> {this.props.name} </div>
+        }
+    }
+    
+    Hello.defaultProps={
+        name : 'React'
+    };
+    export default Hello;
+    
+    
+    var Test=React.createClass({
+        getDefaultProps: function(){
+            return{
+                id : 1
+            };
+        },
+        render: function(){
+            return(
+                <div> 
+                    {this.props.id}:{this.props.name}
+                </div>
+            );
+        }
+    });
+    
+    var component=React.render(<Test name="bar" />, document.body);
+    
+    component.setProps({name : 'foo'}); // <div>1:foo</div>
+    component.replaceProps({name : 'hoge'}); // <div>:hoge</div>
+    
+ 
+    var Counter=React.createClass({
+        getInitialState(){
+            return{
+                count : 0
+            };
+        },
+        onClick(){
+            this.setState({count: this.state.count+1});
+        },
+        render(){
+            return(
+                <div>
+                    <span> {this.state.count}</span>
+                    <button onClick={this.onClick}>click</button>
+                </div>
+            );
+        }
+    });
+    var component=React.render(<Counter />, document.body);
+    
+    
+    var User = React.createClass({
+        propTypes:{
+            name : React.PropTypes.string.isRequired,
+            id : React.PropTypes.number.isRequired
+        },
+        render(){
+            return(
+                <div> {this.props.id}:{this.props.name}</div>
+            );
+        }
+    });
+    
+    var request=require('superagent');
+    
+    var Users=React.createClass({
+       getInitialState(){
+           return{
+               users : [{id:1, name:'foo'}, {id:2, name:'bar'}]
+           }
+       },
+       componentDidMount(){
+           request.get('http://example.com/users/', (res)=>{
+               this.setState({users:res.body.users});
+           });
+       },
+       render(){
+           var users=this.state.users.map((user)=>{
+               return <User id={user.id} name={user.name} key={user.id} />
+           });
+           return (
+            <div>
+                <p> 사용자 목록 </p>
+                {users}
+            </div>
+            );
+       }
+    });
+    
+    var component=React.render(<Users />, document.body);
+  
+    
+    // 자식의 이벤트를 부모에게서 처리
+    
+    var Todo=React.createClass({
+        propTypes:{
+            todo:React.PropTypes.shape({
+                id:React.PropTypes.number.isRequired,
+                test:React.PropTypes.string.isRequired    
+            });
+        },
+        _onDelete(){ // 처리를 위임한다.
+            this.props.onDelete(this.props.todo.id);
+        },
+        render(){
+            return(
+                <div>
+                    <span>{this.props.todo.text}</span>
+                    <button onClick={this._onDelete}>delete</button>
+                </div>
+            );
+        }
+    });
+    
+    
+    var TodoList=React.createClass({
+       getInitialState(){
+            return(
+                todos:[
+                    {id:1, text: 'advent calendar1'},
+                    {id:2, text: 'advent calendar2'},
+                    {id:3, text: 'advent calendar3'}
+                ]  
+            );
+        },
+        deleteTodo(id){ // TodoList 관리 및 제거 담당
+            this.setState({
+                todos: this.state.todos.filter((todo) => {
+                  return todo.id !== id;  
+                })
+            });
+        },
+        render(){
+            var todos= this.state.todos.map((todo)=>{
+                return (
+                    <li key={todo.id}>
+                        <Todo onDelete={this.deleteTodo} todo={todo} />
+                    </li>
+                );
+            });
+            return <ul> {todos} </ul>;
+        }
+    });
+    
+    React.render(<TodoList />, document.body);
+   
+    
+    // Set의 초기값을 prop에 전달
+    /*
+    var Counter=React.createClass({
+       propTypes:{
+           count:React.PropTypes.number
+       },
+       getDefaultProps(){
+           return{
+               count : 0
+           };
+       },
+       getInitialState(){
+           return{
+               count : this.props.count
+           }
+       },
+       onClick(){
+           this.setState({count:this.state.count+1});
+       },
+       render(){
+            return(
+                <div>
+                    <p>{this.state.count}</p>
+                    <button onClick={this.onClick}>click</button>
+                </div>
+            );
+       }
+    });
+    
+    var component=React.render(<Counter />, document.body);
+    */
+    
+    var Counter=React.createClass({
+       propTypes:{
+           initialCount:React.PropTypes.number
+       },
+       getDefaultProps(){
+          return{
+              initialCount : 0
+          } 
+       },
+       getInitialState(){
+           return{
+               count : this.props.initialCount
+           }
+       },
+       onClick(){
+         this.setState({count : this.state.count+1});  
+       },
+       render(){
+           return(
+                <div>
+                    <p>{this.state.count}</p>
+                    <button onClick={this.onClick}>click</button>
+                </div>
+            );
+       }
+    });
+    
+    var component=React.render(<Counter />, document.body);
+    
+    
+    // ref
+    var Test=React.createClass({
+        componentDidMount(){
+            console.log(this.refs.myDiv.props.children);
+        },
+        render(){
+            return(
+                <div ref="myDiv">xxx</div>
+            );
+        }
+    });
+    
+    var component=React.render(<Test />, document.body);    
+    
+    
+    // getDOMNode
+    var Focus = React.createClass({
+        componentDidMount(){
+            //this.refs.myText.getDOMNode().focus(); //deprecated
+            React.findDOMNode(this.refs.myText).focus();
+        },
+        render(){
+            return(
+                <div>
+                    <p> set focus </p>
+                    <input type="text" ref="myText" />
+                </div>
+            );
+        }
+    });
+    
+    var component=React.render(<Focus />, document.body);
+    
+    
+    var Hello=React.createClass({
+       render(){
+           return(
+                <div> {this.props.children}</div>
+           );
+       } 
+    });
+    
+    console.log(
+        React.render(<Hello>xxx</Hello>, document.body).props.children
+    );
+    
+    console.log(
+        React.render(
+            <Hello>
+                <span>1</span>
+                <span>2</span>
+            </Hello>
+            , document.body
+        ).props.children
+    );
+    
+    
+    console.log(
+        React.render(<Hello></Hello>, document.body).props.children
+    );
+    
+    var Hello=React.createClass({
+        render(){
+            return <div>{this.props.children}</div>;
+        }
+    });
+    [
+        <Hello>xxx</Hello>,
+        <Hello><span>1</span><span>2</span></Hello>,
+        <Hello></Hello>
+    ].forEach(jsx=>{
+        var children=React.render(jsx, document.body).props.children;
+        console.log("######"+children+"#####");
+        console.log(React.Children.count(children));
+        React.Children.forEach(children, (child)=>{console.log(child)});
+    });
+    
+    
+    </script>
+  </body>
+</html>

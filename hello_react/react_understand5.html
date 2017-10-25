@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <link rel="stylesheet" href="under4.css">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://fb.me/react-0.13.3.js"></script>
+    <script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.12.1/react-with-addons.js"></script>
+    <script type="text/jsx">
+    
+    //var React=require('react');
+    
+    var App = React.createClass({
+      getInitialState(){
+        return{
+          message : 'loading...'
+          };
+      },
+      componentDidMount(){
+        this.setState({message:'welcome!'});
+      },
+      
+      render(){
+        var list=this.props.data.map(obj => <li key={obj.id}>{obj.id}:{obj.name}</li>);
+        return(
+          <div>
+              <p> server-side rendering sample </p>
+              <p>{this.state.message}</p>
+              <ul>{list}</ul>
+            </div>
+        );
+      }
+    });
+    
+    React.render(<App />, document.body);
+    
+    </script>
+  </body>
+</html>

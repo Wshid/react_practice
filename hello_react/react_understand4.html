@@ -1,0 +1,422 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <link rel="stylesheet" href="under4.css">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://fb.me/react-0.13.3.js"></script>
+    <script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.12.1/react-with-addons.js"></script>
+    <script type="text/jsx">
+    
+    var Hoge=React.createClass({
+        getInitialState(){
+            return{
+                style:{ // style 태그를 지정한다.
+                    color : '#ccc',
+                    width: 200,
+                    height : 100
+                }
+            };
+        },
+        onChange(){
+            var style= _.clone(this.state.style);
+            style.color='#ddd';
+            this.setState({style : style});
+        },
+        render(){
+            return(
+                <div style={this.state.style} onClick={this.onChange}>xxx</div>
+            );
+        }
+        
+    });
+    React.render(<Hoge />, document.body);
+    
+    /*
+    var shouldupdate=
+        this._pendingForceUpdate ||
+            !inst.shouldComponentUpdate ||
+            inst.shouldComponentUpdate(nextProps, nextState, nextContext)
+    
+    */
+    /*
+    var ImageText=React.createClass({
+        render(){
+            return(
+                <span>
+                    {this.props.text}
+                    <img src={this.props.src} width={this.props.width} height={this.props.height} />
+                </span>
+            );
+       } 
+    });
+    
+    React.render(<ImageText text="image name is" src="img/foo.jpg" width="100" height="200" />, document.body);
+    
+    var ImageText=React.createClass({
+        render(){
+            var {text, ...other}=this.props;
+            return(
+                <span>{text}<img {...other} /></span>
+            );
+        }
+    });
+    React.render(<ImageText text="image name was" src="img/foo.jpg" width="500" height="200" alt="first alert" />, document.body);
+    
+    
+    var request=require('superagent')
+    var ImageText=React.createClass({
+        onClick(){
+            request.get('/click_img', {img:this.props.src}); // props.src에 있는 값으로 img 수정
+        },
+        render(){
+            var {text, ...other}=this.props;
+            return(
+                <span>{text}<img {...other} onclick={this.onClick} /></span>
+            );
+        }
+    });
+    
+    React.render(<ImageText />, document.body);
+    */
+    
+    /*
+    var Hello=React.createClass({
+        onClick(){
+            alert('inner');
+        },
+        render(){
+            var {name, ...other}=this.props;
+            return <div> Hello <span {...other} onClick={this.onClick}>{name}</span></div>
+                // inner 출력
+            return <div> Hello <span onClick={this.onClick} {...other}>{name}</span></div>
+                // outer 출력
+        }
+    });
+    
+    function onClick(){
+        alert('outer');
+    }
+    
+    React.render(<Hello name="World" onClick={onClick}/>, document.body);
+    */
+    
+    /*
+    var Logger={
+        logging(str){
+            console.log(str); // 단순 콘솔 출력 함수
+        },
+        componentDidMount(){ // 마운트가 되었을때, 해당 문자열 출력
+            this.logging('component did mount');
+        }
+    };
+    
+    var Hello=React.createClass({
+        mixins:[Logger],
+        render(){
+            this.logging('render'); // render 시작시 문자열 출력
+            return <div>Hello</div> // HTML 출력부분
+        }
+    });
+    
+    React.render(<Hello />, document.body);
+    */
+    /*
+    var MixinA={
+        componentWillMount(){
+            console.log('mixinA');
+        }
+    };
+    
+    var MixinB={
+        componentWillMount(){
+            console.log('mixinB');
+        }
+    }
+    
+    var Hello=React.createClass({
+        mixins:[MixinA, MixinB],
+        componentWillMount(){
+            console.log('hello');
+        },
+        render(){
+            return <div>Hello</div>;
+        }
+    });
+    
+    React.render(<Hello />, document.body);
+    */
+    /*
+    var Mixin = {
+        getInitialState(){
+            return{
+                mixinValue : 'mixin state'
+            };
+        }
+    };
+    
+    var Hello=React.createClass({
+        mixins:[Mixin],
+        getInitialState(){
+            return{
+                componentValue : 'component state'
+            };
+        },
+        render(){
+            console.log(this.state);
+            return <div>hello</div>;
+        }
+    });
+    
+    React.render(<Hello />, document.body);
+    */
+    /*
+    var Mixin = {
+        getDefaultProps(){
+            return{
+                mixinValue : 'mixin prop'
+            };
+        }
+    };
+    
+    var Hello = React.createClass({
+        mixins : [Mixin],
+        getDefaultProps(){
+            return {componentValue : 'component prop' };
+        },
+        render(){
+            console.log(this.props);
+            return <div>hello</div>
+        }
+    });
+    
+    React.render(<Hello />, document.body);
+    */
+    /*
+    
+    var Mixin={
+        getInitialState(){
+            return{
+                value : 'mixin state'
+            };
+        }
+    };
+    
+    var Hello=React.createClass({
+        mixins : [Mixin],
+        getInitialState(){
+            return{
+                value : 'component state'
+            };
+        },
+        render(){
+            console.log(this.state);
+            return <div>hello</div>
+        }
+    });
+    
+    React.render(<Hello />, document.body); 
+    */
+    /*
+    
+    var Mixin = {
+        foo(){
+            console.log('mixin foo');
+        }
+    };
+    
+    var Hello=React.createClass({
+        mixins:[Mixin],
+        foo(){
+            console.log('component foo');
+        },
+        render : function(){
+            return <div>hello</div>
+        }
+    });
+    
+    React.render(<Hello />, document.body);
+    */
+    
+    //var React=require("react/addons");
+    
+    var cloneWithProps=React.addons.cloneWithProps;
+    
+    var Item=React.createClass({
+        render : function(){
+            var text = this.props.text + (this.props.index != null ? ':' + this.props.index : '');
+            return <div>{text}</div>
+        }
+    });
+    
+    var Loop = React.createClass({
+        render : function(){
+            var items=_.map(_.range(this.props.count), function(i){
+                return cloneWithProps(this.props.children, {key : i, index:i});
+            }.bind(this));
+            return <div>{items}</div>
+        }
+    });
+    
+    React.render(<Loop count="10"><Item text="hoge" /></Loop>, document.body);
+    
+    
+    var update=React.addons.update;
+    
+    var obj={
+        list: [1,2,3]
+    };
+    
+    var obj2=update(obj, {
+        list:{
+            $push:[4,5,6]
+        }
+    });
+    
+    console.log(obj2.list);
+    console.log(obj===obj2);
+    
+    /*
+    var obj=Immutable.Map({
+        list : Immutable.List.of(1, 2, 3)
+    });
+    
+    var obj2=obj.set('list', obj.get('list').push(4));
+    
+    console.log(obj2.get('list').toArray());
+    console.log(obj===obj2);
+    */
+    
+    var ReactComponentWithPureRenderMixin={
+        shouldComponentUpdate: function(nextProps, nextState){
+            return !shallowEqual(this.props, nextProps) ||
+                    !shallowEqual(this.state, nextState);
+        }
+    };
+    
+    /*
+     React.addons.Perf.start();
+     this.setState({items:items}, function(){
+         React.addons.Pert.stop();
+         React.addons.Pert.printInclusive();
+     });
+    */
+    
+    var CSSTransitionGroup=React.addons.CSSTransitionGroup;
+    
+    var Hello=React.createClass({
+        getInitialState : function(){
+            return{
+                value: 'state_first'
+            };
+        },
+        onClick: function(){
+            var value=(this.state.value==='state_first')?'state_second':'state_first';
+            this.setState({value : value});
+        },
+        render(){
+            var value=<span className="sample" key={this.state.value}> {this.state.value}</span>;
+            return(
+                <div>
+                    <div>Animation!!<button onClick={this.onClick}>click!!</button></div>
+                    <CSSTransitionGroup transitionName="sample">
+                        {value}
+                    </CSSTransitionGroup>
+                </div>
+            );
+        }
+    });
+    
+    React.render(<Hello />, document.body);
+    
+    
+    var Hello=React.createClass({
+        getInitialState(){
+            return{
+                value : ''
+            };
+        },
+        onClick(){
+            var value = this.state.value==='first'?'second':'first';
+            this.setState({value : value});
+        },
+        render:function(){
+            var value;
+            if(this.state.value){
+                value=(
+                    <CSSTransitionGroup transitionName="sample">
+                        <span className="sample" key={this.state.value}>{this.state.value}</span>
+                    </CSSTransitionGroup>
+                );
+            }
+            return(
+                <div>
+                    <div>Animation!!<button onClick={this.onClick}>click!!</button></div>
+                    {value}
+                </div>
+            );
+        }
+    });
+    
+    React.render(<Hello />, document.body);
+    
+    
+    var TransitionGroup=React.addons.TransitionGroup;
+    var duration=1000;
+    var AnimationComponent=React.createClass({
+        componentWillEnter: function(callback){
+            console.log('component will enter');
+            console.log($(this.getDOMNode()));
+            $(this.getDOMNode()).hide();
+            callback();
+        },
+        componentDidEnter(){
+            $(this.getDOMNode()).show(duration);
+            console.log('component did enter');
+        },
+        componentWillLeave(callback){
+            console.log('component will leave');
+            $(this.getDOMNode()).hide(duration, callback);
+            callback();
+        },
+        componentDidLeave(){
+            console.log('component did leave');
+        },
+        render:function(){
+            return <div>{this.props.text}</div>;
+        }
+    });
+    
+    var Hello=React.createClass({
+        getInitialState:function(){
+            return{
+                value:'first'
+            };
+        },
+        onClick: function(){
+            var value=this.state.value==='first'?'second':'first';
+            this.setState({value : value});
+        },
+        render(){
+            var value=<AnimationComponent key={this.state.value} text={this.state.value} />;
+            return(
+                <div>
+                    <div>Animation!!<button onClick={this.onClick}>click!!</button></div>
+                    <TransitionGroup>
+                        {value}
+                    </TransitionGroup>
+                </div>
+            );
+        }
+    });
+    
+    React.render(<Hello />, document.body);
+    
+    </script>
+  </body>
+</html>
