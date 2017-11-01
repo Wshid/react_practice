@@ -3,10 +3,15 @@ var router=express.Router();
 
 router.get('/:id', (req, res)=>{
     res.send('Received a GET requset, param:'+req.params.id);
-});
+}); 
 
 router.post('/', (req, res)=>{
-    res.json({success: true});
+    console.log(JSON.stringify(req.body, null, 2)); // json 형태로 받은 것을 깔끔히 정리
+    res.json({
+        success: true,
+        user : req.body.username
+        
+    });
     
 });
 
